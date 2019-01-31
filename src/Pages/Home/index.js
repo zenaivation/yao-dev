@@ -24,13 +24,15 @@ class Home extends Component {
     // calling the new action creator
     this.props.getWeather();
     this.props.getNews();
-    this.props.saveSearch('Amsterdam');
-    navigator.geolocation.getCurrentPosition(function (location) {
+    navigator.geolocation.getCurrentPosition(async function (location) {
+      console.log(location.coords.longitude);
       this.setState({
         lat: location.coords.latitude,
         lon: location.coords.longitude
       })
-      this.props.getPlaces(location.coords.latitude, location.coords.longitude);
+      this.props.getPlaces(location.coords.latitude, location.coords.longitude).then(res => {
+        console.log("Places awaited tadaa", res);
+      });
     }.bind(this))
   }
 
@@ -54,8 +56,10 @@ class Home extends Component {
       }
     }
   }
+
   render() {
-    const { weather, news, places } = this.props;
+    const { weather, news, places, isLoading } = this.props;
+    console.log(isLoading);
     return (
       <Fragment>
         <div className="home">
@@ -84,20 +88,33 @@ class Home extends Component {
             ) : null}
           </div>
           <div className="main-place-container">
-            {places.slice(0, 1).map(place =>
-              <MainPlace
-                title={place.name}
-                image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
-              />
-            )}
+            {isLoading ? (
+              <div>Loading....</div>
+            ) : (<Fragment>
+              {
+                places.slice(0, 1).map(place =>
+                  <MainPlace
+                    title={place.name}
+                    image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+                  />
+                )
+              }
+            </Fragment>)}
           </div>
+
           <div className="small-place-container">
-            {places.slice(1, -1).map(place =>
-              <SmallPlace
-                title={place.name}
-                image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
-              />
-            )}
+            {isLoading ? (
+              <div>Loading....</div>
+            ) : (<Fragment>
+              {
+                places.slice(1, -1).map(place =>
+                  <SmallPlace
+                    title={place.name}
+                  // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+                  />
+                )
+              }
+            </Fragment>)}
           </div>
         </div>
         <Navigation home={true} />
@@ -113,6 +130,7 @@ function mapStateToProps(state) {
     news: state.news,
     places: state.places,
     searchLocation: state.searchLocation,
+    isLoading: state.isLoading
   };
 }
 

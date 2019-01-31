@@ -10,7 +10,6 @@ export function getWeather() {
 
   return function (dispatch) {
     return fetch("https://openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22")
-
       .then(response => response.json())
       .then(json => {
         dispatch({ type: "DATA_WEATHER", payload: json });
@@ -41,10 +40,10 @@ export function getNews() {
 
 export const getPlaces = (lat, long) => async dispatch => {
   try {
+    dispatch({ type: 'PLACES_IS_LOADING' });
     const result = await axios.get(`http://localhost:5000/map/${lat}/${long}`, {});
     return dispatch({ type: 'DATA_PLACES', result });
   } catch (err) {
-    console.log(err);
     return dispatch({
       type: 'DATA_PLACES_ERROR',
       err

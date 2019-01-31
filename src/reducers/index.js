@@ -15,12 +15,17 @@ const initialState = {
   profilePref: {},
   searchLocation: [],
   bookmarks: [],
+  isLoading: null,
 };
 
 
 
 function rootReducer(state = initialState, action) {
   switch (action.type) {
+
+    case 'PLACES_IS_LOADING': {
+      return { ...state, isLoading: true };
+    }
 
     case 'DATA_PLACES': {
       const { data } = action.result;
