@@ -68,13 +68,15 @@ class Home extends Component {
         <div className="home">
           <Header title="Home" />
           <div className="home__locationBg" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1468436385273-8abca6dfd8d3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=994&q=80)' }}>
-            <SearchBar
-              onChange={this.onSearch}
-              onKeyDown={this.keyPress}
-            />
-            <Link className="home__toMap" to='/map'>
-              <img src={toMap} alt="to map" />
-            </Link>
+            <div className="home__container">
+              <SearchBar
+                onChange={this.onSearch}
+                onKeyDown={this.keyPress}
+              />
+              <Link className="home__toMap" to='/map'>
+                <img src={toMap} alt="to map" />
+              </Link>
+            </div>
           </div>
           <div className="w-n-container">
             {weather ? (<WeatherBlock
@@ -92,19 +94,37 @@ class Home extends Component {
           </div>
           <div className="main-place-container">
             {places.slice(0, 1).map(place =>
-              <MainPlace
-                title={place.name}
-              // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
-              />
+              <Fragment>
+                {place.photos ? (
+                  <MainPlace
+                    title={place.name}
+                    image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+                  />
+                ) : (
+                    <MainPlace
+                      title={place.name}
+                      image="https://via.placeholder.com/150"
+                    />
+                  )}
+              </Fragment>
             )}
           </div>
 
           <div className="small-place-container">
             {places.slice(1, -1).map(place =>
-              <SmallPlace
-                title={place.name}
-              // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
-              />
+              <Fragment>
+                {place.photos ? (
+                  <SmallPlace
+                    title={place.name}
+                    image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+                  />
+                ) : (
+                    <SmallPlace
+                      title={place.name}
+                      image="https://via.placeholder.com/150"
+                    />
+                  )}
+              </Fragment>
             )}
           </div>
         </div>
