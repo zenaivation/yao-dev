@@ -94,19 +94,37 @@ class Home extends Component {
           </div>
           <div className="main-place-container">
             {places.slice(0, 1).map(place =>
-              <MainPlace
-                title={place.name}
-                image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
-              />
+              <Fragment>
+                {place.photos ? (
+                  <MainPlace
+                    title={place.name}
+                    image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+                  />
+                ) : (
+                    <MainPlace
+                      title={place.name}
+                      image="https://via.placeholder.com/150"
+                    />
+                  )}
+              </Fragment>
             )}
           </div>
 
           <div className="small-place-container">
             {places.slice(1, -1).map(place =>
-              <SmallPlace
-                title={place.name}
-              // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
-              />
+              <Fragment>
+                {place.photos ? (
+                  <SmallPlace
+                    title={place.name}
+                    image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+                  />
+                ) : (
+                    <SmallPlace
+                      title={place.name}
+                      image="https://via.placeholder.com/150"
+                    />
+                  )}
+              </Fragment>
             )}
           </div>
         </div>

@@ -41,7 +41,7 @@ export function getNews() {
 export const getPlaces = (lat, long) => async dispatch => {
   try {
     dispatch({ type: 'PLACES_IS_LOADING' });
-    const result = await axios.get(`http://localhost:5000/map/${lat}/${long}`, {});
+    const result = await axios.get(`https://yao-backend.herokuapp.com/map/${lat}/${long}`, {});
     return dispatch({ type: 'DATA_PLACES', result });
   } catch (err) {
     return dispatch({
@@ -63,7 +63,7 @@ export function savePrefrences(obj) {
 
 export function saveSearch(searchQuery) {
   return function (dispatch) {
-    return fetch(`http://localhost:5000/search/${searchQuery}`)
+    return fetch(`https://yao-backend.herokuapp.com/search/${searchQuery}`)
       .then(response => response.json())
       .then(json => {
         dispatch({ type: "SAVE_SEARCH", payload: json });
