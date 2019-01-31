@@ -106,7 +106,10 @@ class Explore extends Component {
   }
 
   centerButton = () => {
-    alert('center');
+    this.setState({
+      lat: this.state.lat,
+      lon: this.state.lon
+    })
   }
 
   render() {
@@ -185,7 +188,7 @@ class Explore extends Component {
                 key={place.place_id}
                 title={place.name}
                 // status={place.opening_hours.open_now}
-                image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+                // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
                 onClick={() => this.openPopup(place)}
                 style={popup ? { opacity: 0.2 } : {}}
               />
@@ -194,7 +197,7 @@ class Explore extends Component {
 
           {popup ? (
             <PopupPlace
-              image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${activePlace.photos[0].photo_reference}&key=${key}`}
+              // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${activePlace.photos[0].photo_reference}&key=${key}`}
               title={activePlace.name}
               description="Nulla sit amet est. Praesent vestibulum dapibus nibh. Phasellus dolor. Duis leo.Vivamus consectetuer hendrerit lacus. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Vivamus quis mi. Fusce ac felis sit amet ligula pharetra condimentum."
               onClick={this.handleClosePopup}
