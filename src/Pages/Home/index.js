@@ -43,15 +43,18 @@ class Home extends Component {
     })
   }
 
-  keyPress = (event) => {
+  keyPress = async (event) => {
     const { search } = this.state;
     if (event.keyCode === 13) {
-      this.props.saveSearch(search);
+      await this.props.saveSearch(search);
       if (this.props.searchLocation) {
-        console.log(this.props.searchLocation);
+        console.log('searchLocation', this.props.searchLocation);
         this.props.history.push({
-          pathname: '/map',
-          state: { searchLoc: this.props.searchLocation }
+          pathname: `/map`,
+          state: {
+            lat: this.props.searchLocation.lat,
+            lng: this.props.searchLocation.lng
+          }
         })
       }
     }

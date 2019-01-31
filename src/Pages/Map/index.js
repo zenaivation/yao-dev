@@ -60,15 +60,13 @@ class Explore extends Component {
       })
     }
 
-    if (this.state.fromSearch) {
+    if (this.props.location.state.lat && this.props.location.state.lng ) {
       this.setState({
-        lat: this.props.location.state.searchLoc.lat,
-        lon: this.props.location.state.searchLoc.lng
+        lat: this.props.location.state.lat,
+        lon: this.props.location.state.lng
       })
-      this.props.getPlaces(this.props.location.state.searchLoc.lat, this.props.location.state.searchLoc.lng);
-    }
-
-    if (!this.state.fromSearch) {
+      this.props.getPlaces(this.props.location.state.lat, this.props.location.state.lng);
+    } else {
       navigator.geolocation.getCurrentPosition(function (location) {
         this.setState({
           lat: location.coords.latitude,
@@ -106,10 +104,13 @@ class Explore extends Component {
   }
 
   centerButton = () => {
-    this.setState({
-      lat: this.state.lat,
-      lon: this.state.lon
-    })
+    navigator.geolocation.getCurrentPosition(function (location) {
+      this.setState({
+        lat: location.coords.latitude,
+        lon: location.coords.longitude
+      })
+      this.props.getPlaces(this.state.lat, this.state.lon);
+    }.bind(this));
   }
 
   render() {
