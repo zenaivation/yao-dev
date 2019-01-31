@@ -7,12 +7,22 @@
     width: 100%;
     background-size: cover;
     background-position: center;
+    display: grid;
+  }
+
+  &__container {
+    display: grid;
+    justify-content: center;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    align-items: center;
+    justify-content: center;
   }
 
     &__toMap {
-      position: absolute;
-      top: 30%;
-      left: 43%;
+      align-self: start;
+      justify-self: center;
   }
 
   .w-n-container {
