@@ -106,7 +106,10 @@ class Explore extends Component {
   }
 
   centerButton = () => {
-    alert('center');
+    this.setState({
+      lat: this.state.lat,
+      lon: this.state.lon
+    })
   }
 
   render() {

@@ -88,37 +88,25 @@ class Home extends Component {
             ) : null}
           </div>
           <div className="main-place-container">
-            {isLoading ? (
-              <div>Loading....</div>
-            ) : (<Fragment>
-              {
-                places.slice(0, 1).map(place =>
-                  <MainPlace
-                    title={place.name}
-                    image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
-                  />
-                )
-              }
-            </Fragment>)}
+            {places.slice(0, 1).map(place =>
+              <MainPlace
+                title={place.name}
+              // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+              />
+            )}
           </div>
 
           <div className="small-place-container">
-            {isLoading ? (
-              <div>Loading....</div>
-            ) : (<Fragment>
-              {
-                places.slice(1, -1).map(place =>
-                  <SmallPlace
-                    title={place.name}
-                  // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
-                  />
-                )
-              }
-            </Fragment>)}
+            {places.slice(1, -1).map(place =>
+              <SmallPlace
+                title={place.name}
+              // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+              />
+            )}
           </div>
         </div>
         <Navigation home={true} />
-      </Fragment >
+      </Fragment>
     );
   }
 
