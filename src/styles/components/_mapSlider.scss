@@ -1,0 +1,19 @@
+.slick-slider {
+  position: relative;
+  bottom: 230px;
+}
+
+.sliderCard {
+  background: $white;
+  border-radius: 4px;
+  box-shadow: 0 6px 22px 0 rgba(0,0,0,0.10);
+  margin: 0 10px;
+  &__img {
+    height: 100px;
+    background-size: cover;
+  }
+
+  &__content {
+    padding: 10px;
+  }
+}

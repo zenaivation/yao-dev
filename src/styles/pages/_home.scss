@@ -1,0 +1,38 @@
+//Home
+
+.home {
+  padding-bottom: 50px;
+  &__locationBg {
+    height: 400px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+
+    &__toMap {
+      position: absolute;
+      top: 30%;
+      left: 43%;
+  }
+
+  .w-n-container {
+    display: grid;
+    padding: 0 20px;
+    margin-top: -75px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+  }
+
+  .main-place-container {
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+
+  .small-place-container {
+    margin: 20px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+}

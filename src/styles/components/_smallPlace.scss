@@ -1,0 +1,14 @@
+.smallPlace {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  box-shadow: 0 2px 30px 0 rgba(0,0,0,0.1);
+
+  &__image {
+    background-size: cover;
+    background-position: center;
+  }
+
+  &__content {
+    padding: 5px;
+  }
+}

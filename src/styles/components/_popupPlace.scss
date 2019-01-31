@@ -1,0 +1,57 @@
+.popup {
+  border-radius: 2px;
+  margin: 30px;
+  box-shadow: 0 6px 20px 0 rgba(0,0,0,0.10);
+  position: absolute;
+  bottom: 2%;
+  z-index: 100;
+  background: $white;
+
+  &__close {
+    position: absolute;
+    top: 0;
+    right: 2%;
+    
+    &::after {
+      display: inline-block;
+      content: "\00d7"; /* This will render the 'X' */
+      font-size: 40px;
+      color: $white;
+    }
+  }
+
+  &__image {
+    background-size: cover;
+    height: 200px;
+  }
+
+  &__content {
+    padding: 10px;
+
+    &__top {
+      display: grid;
+      grid-template-columns: 5fr 1fr;
+
+      img {
+        width: 30px;
+        height: 30px;
+        justify-self: end;
+      }
+    }
+  }
+
+  &__button {
+    background: $third;
+    margin-top: 20px;
+
+    a {
+      color: $white;
+      text-decoration: none;
+      display: grid;
+      place-items: center;
+      padding: 10px;
+      font-family: $lato;
+      font-weight: $bold;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+.header {
+  background: $third;
+  display: grid;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr);
+
+  a {
+    justify-self: center;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+}

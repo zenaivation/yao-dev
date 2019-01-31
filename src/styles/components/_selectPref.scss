@@ -1,0 +1,18 @@
+.select {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  padding: 10px 0px;
+  margin-top: 10px;
+
+  label {
+    text-align: left;
+  }
+
+  select {
+    border: 1px solid rgba(0,0,0,0.20);
+    box-shadow: 0 1px 30px 0 rgba(0,0,0,0.10);
+    background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat 95% transparent;
+    padding: 10px;
+    outline: none;
+  }
+}

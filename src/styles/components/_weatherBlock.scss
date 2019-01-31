@@ -1,0 +1,12 @@
+.weatherBlock {
+  background: $primary;
+  display: grid;
+  grid-template-rows: 50px;
+  padding: 10px;
+
+  &__celsius {
+    padding:5px;
+    justify-self: end;
+    align-self: self-start;
+  }
+}

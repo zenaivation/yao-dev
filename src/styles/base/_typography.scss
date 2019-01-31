@@ -1,0 +1,166 @@
+//Typography
+
+@import 'base/colors';
+
+
+$huge: 32px;
+$big: 24px; 
+$medium: 18px;
+$small : 14px;
+$mini : 12px;
+
+$bold: bold;
+$regular: 400;
+$light: 'lighter';
+
+.boldH1 {
+  font-family: $poppins;
+  font-size: $huge;
+  font-weight: $bold;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+}
+
+.H1 {
+  font-family: $poppins;
+  font-size: $huge;
+  font-weight: $regular;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+} 
+
+.boldH2 {
+  font-family: $poppins;
+  font-size: $big;
+  font-weight: $bold;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+}
+
+.H2 {
+  font-family: $poppins;
+  font-size: $big;
+  font-weight: $regular;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+} 
+
+.boldH3 {
+  font-family: $poppins;
+  font-size: $small;
+  font-weight: $bold;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+}
+
+.H3 {
+  font-family: $poppins;
+  font-size: $small;
+  font-weight: $regular;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+}
+
+
+.boldP {
+  font-family: $lato;
+  font-size: $mini;
+  font-weight: $bold;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+}
+
+.boldH5 {
+  font-family: $lato;
+  font-size: $mini;
+  font-weight: $bold;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+}
+
+.H5 {
+  font-family: $lato;
+  font-size: $medium;
+  font-weight: $regular;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+}
+
+.P {
+  font-family: $lato;
+  font-size: $mini;
+  font-weight: $regular;
+  opacity: 0.7;
+  margin: 0;
+
+  &--white {
+    color: $white;
+  }
+
+  &--black {
+    color: $black;
+  }
+}
