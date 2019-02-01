@@ -60,7 +60,7 @@ class Explore extends Component {
       })
     }
 
-    if (this.props.location.state.lat && this.props.location.state.lng) {
+    if (this.props.location.state && this.props.location.state.lat && this.props.location.state.lng) {
       this.setState({
         lat: this.props.location.state.lat,
         lon: this.props.location.state.lng
