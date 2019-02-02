@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import { Link, Redirect } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+
 import { Navigation, SearchBar, WeatherBlock, NewsBlock, MainPlace, SmallPlace, Header } from '../../components';
 import { getWeather, getNews, getPlaces, saveSearch } from "../../actions/index";
 import toMap from '../../images/toMap.png';
@@ -62,7 +64,6 @@ class Home extends Component {
 
   render() {
     const { weather, news, places, isLoading } = this.props;
-    console.log(isLoading);
     return (
       <Fragment>
         <div className="home">
@@ -83,14 +84,14 @@ class Home extends Component {
               celcius={weather.main.temp}
               weather_status={weather.weather[0].main}
             />
-            ) : null}
+            ) : <Skeleton width={100} />}
 
             {news ? (
               <NewsBlock
                 news_title={news.articles[0].title}
                 news_description={news.articles[0].description}
               />
-            ) : null}
+            ) : <Skeleton width={100} />}
           </div>
           <div className="main-place-container">
             {places.slice(0, 1).map(place =>

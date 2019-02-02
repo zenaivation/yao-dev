@@ -8,6 +8,31 @@
   border-radius: 4px;
   box-shadow: 0 6px 22px 0 rgba(0,0,0,0.10);
   margin: 0 10px;
+  position: relative;
+
+  &__index {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: -16%;
+    background: $white;
+    border: 2px solid $third;
+    border-radius: 100%;
+    display: grid;
+    left: 40%;
+    align-items: end;
+    justify-content: center;
+    -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.1);
+    box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.1);
+
+    p {
+      font-size: 10px;
+      margin: 0 0 5px 0;
+      font-weight: bold;
+    }
+  }
+
   &__img {
     height: 100px;
     background-size: cover;

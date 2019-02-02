@@ -19,19 +19,25 @@
     border-radius: 6px;
   }
 
-  &__tagline {
-    display: grid;
-    align-items: start;
-  }
-
   &__title {
     display: grid;
     align-items: center;
+    grid-row-start: 2;
+    padding-left: 20px;
   }
 
   &__view {
     background: $secondary;
     display: grid;
     border-bottom-left-radius: 6px;
+    grid-row-start: 3;
+    height: 25px;
+    align-self: end;
+    width: 60%;
+
+    span {
+      justify-self: center;
+      align-self: center;
+    }
   }
 }

@@ -10,6 +10,7 @@ import { getPlaces, saveBookmark } from "../../actions/index";
 
 import { Navigation, MapSlider, PopupPlace } from '../../components';
 import BigMarker from '../../images/big-marker.png';
+import LikeMarker from '../../images/like-marker.png';
 import MiddleMarker from '../../images/middle-marker.png';
 import SmallMarker from '../../images/small-marker.png';
 import CenterButtonIcon from '../../images/toMap.png';
@@ -124,7 +125,7 @@ class Explore extends Component {
       </div>
     )
 
-    const MapMarker = ({ rating, lat, long, onClick }) => {
+    const MapMarker = ({ rating, lat, long, onClick, index }) => {
       switch (true) {
         case rating >= 4.5:
           return (
@@ -133,7 +134,8 @@ class Explore extends Component {
               anchor="bottom"
               onClick={onClick}
             >
-              <img src={BigMarker} />
+              {/* <img src={LikeMarker} /> */}
+              <div className="marker marker--big"><p>{index + 1}</p></div>
             </Marker>
           );
         case rating >= 4.0:
@@ -143,7 +145,7 @@ class Explore extends Component {
               anchor="bottom"
               onClick={onClick}
             >
-              <img src={MiddleMarker} />
+              <div className="marker marker--middle"><p>{index + 1}</p></div>
 
             </Marker>
           );
@@ -154,7 +156,7 @@ class Explore extends Component {
               anchor="bottom"
               onClick={onClick}
             >
-              <img src={SmallMarker} />
+              <div className="marker marker--small"><p>{index + 1}</p></div>
             </Marker>
           );
         default:
@@ -171,20 +173,21 @@ class Explore extends Component {
               width: "100vw"
             }}
             center={{ lng: lon, lat: lat }}
-            zoom={[13]}>
-            {places.map(place =>
+            zoom={[14]}>
+            {places.map((place, i) =>
               <MapMarker
                 key={place.place_id}
                 rating={place.rating}
                 lat={place.geometry.location.lat}
                 long={place.geometry.location.lng}
                 onClick={() => this.openPopup(place)}
+                index={i}
               />
             )}
           </Map>
           <CenterButton onClick={() => this.centerButton()} />
           <Slider {...settings}>
-            {places.map(place =>
+            {places.map((place, i) =>
               <Fragment>
                 {place.photos ? (
                   <MapSlider
@@ -194,6 +197,7 @@ class Explore extends Component {
                     image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
                     onClick={() => this.openPopup(place)}
                     style={popup ? { opacity: 0.2 } : {}}
+                    index={i}
                   />
                 ) : (
                     <MapSlider
@@ -203,6 +207,7 @@ class Explore extends Component {
                       // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
                       onClick={() => this.openPopup(place)}
                       style={popup ? { opacity: 0.2 } : {}}
+                      index={i}
                     />
                   )}
               </Fragment>
