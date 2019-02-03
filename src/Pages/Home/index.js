@@ -60,6 +60,17 @@ class Home extends Component {
     }
   }
 
+  goTo = (place) => {
+    this.props.history.push({
+      pathname: `/map`,
+      state: {
+        lat: place.lat,
+        lng: place.lng,
+        fromPlace: place
+      }
+    })
+  }
+
   render() {
     const { weather, news, places, isLoading } = this.props;
     console.log(isLoading);
@@ -116,11 +127,17 @@ class Home extends Component {
                 {place.photos ? (
                   <SmallPlace
                     title={place.name}
+                    lat={place.geometry.location.latitude}
+                    lng={place.geometry.location.longitude}
+                    goTo={this.goTo}
                     image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
                   />
                 ) : (
                     <SmallPlace
                       title={place.name}
+                      lat={place.geometry.location.latitude}
+                      lng={place.geometry.location.longitude}
+                      goTo={this.goTo}
                       image="https://via.placeholder.com/150"
                     />
                   )}
