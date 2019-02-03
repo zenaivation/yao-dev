@@ -9,10 +9,10 @@ import { getPlaces, saveBookmark } from "../../actions/index";
 
 
 import { Navigation, MapSlider, PopupPlace } from '../../components';
-import BigMarker from '../../images/big-marker.png';
-import LikeMarker from '../../images/like-marker.png';
-import MiddleMarker from '../../images/middle-marker.png';
-import SmallMarker from '../../images/small-marker.png';
+// import BigMarker from '../../images/big-marker.png';
+// import LikeMarker from '../../images/like-marker.png';
+// import MiddleMarker from '../../images/middle-marker.png';
+// import SmallMarker from '../../images/small-marker.png';
 import CenterButtonIcon from '../../images/toMap.png';
 
 
