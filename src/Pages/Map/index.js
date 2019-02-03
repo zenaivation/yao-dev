@@ -9,10 +9,10 @@ import { getPlaces, saveBookmark } from "../../actions/index";
 
 
 import { Navigation, MapSlider, PopupPlace } from '../../components';
-import BigMarker from '../../images/big-marker.png';
-import LikeMarker from '../../images/like-marker.png';
-import MiddleMarker from '../../images/middle-marker.png';
-import SmallMarker from '../../images/small-marker.png';
+// import BigMarker from '../../images/big-marker.png';
+// import LikeMarker from '../../images/like-marker.png';
+// import MiddleMarker from '../../images/middle-marker.png';
+// import SmallMarker from '../../images/small-marker.png';
 import CenterButtonIcon from '../../images/toMap.png';
 
 
@@ -61,7 +61,14 @@ class Explore extends Component {
       })
     }
 
-    if (this.props.location.state && this.props.location.state.lat && this.props.location.state.lng) {
+    if (this.props.location.state && this.props.location.state.fromPlace) {
+      this.setState({
+        popup: true,
+        activePlace: this.props.location.state.fromPlace
+      })
+    }
+
+    if (this.props.location.state && this.props.location.state.lat && this.props.location.state.lng ) {
       this.setState({
         lat: this.props.location.state.lat,
         lon: this.props.location.state.lng

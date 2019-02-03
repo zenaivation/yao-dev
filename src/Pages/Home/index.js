@@ -18,7 +18,7 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      search: '',
+      search: ''
     }
   }
 
@@ -62,6 +62,17 @@ class Home extends Component {
     }
   }
 
+  goTo = (place) => {
+    this.props.history.push({
+      pathname: `/map`,
+      state: {
+        lat: place.lat,
+        lng: place.lng,
+        fromPlace: place
+      }
+    })
+  }
+
   render() {
     const { weather, news, places, isLoading } = this.props;
     return (
@@ -74,6 +85,7 @@ class Home extends Component {
                 onChange={this.onSearch}
                 onKeyDown={this.keyPress}
               />
+              {this.state.searchError && <p>No places were found for your query. Please try again.</p>}
               <Link className="home__toMap" to='/map'>
                 <img src={toMap} alt="to map" />
               </Link>
@@ -116,12 +128,20 @@ class Home extends Component {
               <Fragment>
                 {place.photos ? (
                   <SmallPlace
+                    place={place}
                     title={place.name}
+                    lat={place.geometry.location.latitude}
+                    lng={place.geometry.location.longitude}
+                    goTo={this.goTo}
                     image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
                   />
                 ) : (
                     <SmallPlace
+                      place={place}
                       title={place.name}
+                      lat={place.geometry.location.latitude}
+                      lng={place.geometry.location.longitude}
+                      goTo={this.goTo}
                       image="https://via.placeholder.com/150"
                     />
                   )}
