@@ -2,14 +2,14 @@ import React, { PureComponent, Fragment } from 'react'
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import HomeIcon from '../../images/MenuIcons/home.png';
-import HomeIconActive from '../../images/MenuIcons/home-active.png';
-import MapIcon from '../../images/MenuIcons/map.png';
-import MapIconActive from '../../images/MenuIcons/map-active.png';
-import BookmarkIcon from '../../images/MenuIcons/bookmark.png';
-import BookmarkIconActive from '../../images/MenuIcons/bookmark-active.png';
-import SettingsIcon from '../../images/MenuIcons/settings.png';
-import SettingsIconActive from '../../images/MenuIcons/settings-active.png';
+import HomeIcon from '../../images/MenuIcons/home-big.png';
+import HomeIconActive from '../../images/MenuIcons/home-active-big.png';
+import MapIcon from '../../images/MenuIcons/map-big.png';
+import MapIconActive from '../../images/MenuIcons/map-active-big.png';
+import BookmarkIcon from '../../images/MenuIcons/bookmark-big.png';
+import BookmarkIconActive from '../../images/MenuIcons/bookmark-active-big.png';
+import SettingsIcon from '../../images/MenuIcons/settings-big.png';
+import SettingsIconActive from '../../images/MenuIcons/settings-active-big.png';
 
 import './styles.scss';
 

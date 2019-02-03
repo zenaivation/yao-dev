@@ -114,7 +114,7 @@ class Profile extends Component {
             <Button text="save" onClick={this.handleSaveTypes} />
           </div>
         </div>
-        <Navigation profile={true} />
+
         {profilePref ? (
           <div className="profile__table">
             <div className="profile__row">
@@ -146,6 +146,9 @@ class Profile extends Component {
             </div>
           </div>
         </div>)}
+
+        <Navigation profile={true} />
+
 
       </Fragment>
     );
