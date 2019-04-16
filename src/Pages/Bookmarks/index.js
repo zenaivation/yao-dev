@@ -2,14 +2,11 @@ import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import { Navigation, Header, BookmarkRow } from '../../components';
 
-const key = 'AIzaSyC48nPNoUEt9PuHq3IAOSfUZ-SPjbKksMk';
+const key = 'AIzaSyCm_boaMdggWKCv5MSJPdM3xTnGiuq_5zg';
 
-const mapStateToProps = state => {
-  return { bookmarks: state.bookmarks };
-};
 
 class Bookmark extends Component {
-
+  //Renders layout for bookmark page
   render() {
     const { bookmarks } = this.props;
 
@@ -42,8 +39,10 @@ class Bookmark extends Component {
       </Fragment >
     );
   }
-
 }
+const mapStateToProps = state => {
+  return { bookmarks: state.bookmarks };
+};
 const Bookmarks = connect(mapStateToProps)(Bookmark);
 
 

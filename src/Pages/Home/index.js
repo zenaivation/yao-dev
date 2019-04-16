@@ -6,10 +6,11 @@ import Skeleton from 'react-loading-skeleton';
 import { Navigation, SearchBar, WeatherBlock, NewsBlock, MainPlace, SmallPlace, Header } from '../../components';
 import { getWeather, getNews, getPlaces, saveSearch } from "../../actions/index";
 import toMap from '../../images/toMap.png';
+import profileImage from '../../images/profileImage.png';
 
 import './styles.scss';
 
-const key = 'AIzaSyC48nPNoUEt9PuHq3IAOSfUZ-SPjbKksMk';
+const key = 'AIzaSyCm_boaMdggWKCv5MSJPdM3xTnGiuq_5zg';
 
 
 class Home extends Component {
@@ -23,9 +24,11 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    // calling the new action creator
+    // Getting weahter data
     this.props.getWeather();
+    // Getting news data
     this.props.getNews();
+    // Getting users location
     navigator.geolocation.getCurrentPosition(async function (location) {
       console.log(location.coords.longitude);
       this.setState({
@@ -38,13 +41,14 @@ class Home extends Component {
     }.bind(this))
   }
 
-
+  // Search City function
   onSearch = (event) => {
     this.setState({
       search: event.target.value
     })
   }
 
+  // Handles the enter on the search bar
   keyPress = async (event) => {
     const { search } = this.state;
     if (event.keyCode === 13) {
@@ -62,6 +66,7 @@ class Home extends Component {
     }
   }
 
+  //Handles click on place function
   goTo = (place) => {
     this.props.history.push({
       pathname: `/map`,
@@ -73,14 +78,20 @@ class Home extends Component {
     })
   }
 
+  // Renders the layout of the homepage
   render() {
     const { weather, news, places, isLoading } = this.props;
     return (
       <Fragment>
         <div className="home">
-          <Header title="Home" />
           <div className="home__locationBg" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1468436385273-8abca6dfd8d3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=994&q=80)' }}>
             <div className="home__container">
+              <div className="profile">
+                <p>Amsterdam</p>
+                <Link to='/profile'>
+                  <img src={profileImage} alt=" " />
+                </Link>
+              </div>
               <SearchBar
                 onChange={this.onSearch}
                 onKeyDown={this.keyPress}
@@ -110,13 +121,22 @@ class Home extends Component {
               <Fragment>
                 {place.photos ? (
                   <MainPlace
+                    place={place}
                     title={place.name}
                     image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
+                    lat={place.geometry.location.latitude}
+                    lng={place.geometry.location.longitude}
+                    goTo={this.goTo}
+
                   />
                 ) : (
                     <MainPlace
+                      place={place}
                       title={place.name}
                       image="https://via.placeholder.com/150"
+                      lat={place.geometry.location.latitude}
+                      lng={place.geometry.location.longitude}
+                      goTo={this.goTo}
                     />
                   )}
               </Fragment>
@@ -124,7 +144,7 @@ class Home extends Component {
           </div>
 
           <div className="small-place-container">
-            {places.slice(1, -1).map(place =>
+            {places.slice(1, 3).map(place =>
               <Fragment>
                 {place.photos ? (
                   <SmallPlace
@@ -156,6 +176,7 @@ class Home extends Component {
 
 }
 
+//Connect redux
 function mapStateToProps(state) {
   return {
     weather: state.weather,

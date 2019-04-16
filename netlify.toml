@@ -1,5 +1,0 @@
-[build.environment]
-  API_KEY="AIzaSyC48nPNoUEt9PuHq3IAOSfUZ-SPjbKksMk"
-
-[context.production.environment]
-  API_KEY="AIzaSyC48nPNoUEt9PuHq3IAOSfUZ-SPjbKksMk"

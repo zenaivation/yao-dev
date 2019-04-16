@@ -18,7 +18,6 @@ export function getWeather() {
 }
 
 export function getNews() {
-
   return function (dispatch) {
     return fetch("https://newsapi.org/v2/top-headlines?country=nl&pageSize=1&apiKey=3df3d604168d487592dba16581e9d5af")
       .then(response => response.json())
@@ -28,20 +27,10 @@ export function getNews() {
   };
 }
 
-// export function getPlaces(lat, long) {
-//   return function (dispatch) {
-//     return fetch(`http://localhost:5000/map/${lat}/${long}`)
-//       .then(response => response.json())
-//       .then(json => {
-//         dispatch({ type: "DATA_PLACES", payload: json });
-//       });
-//   };
-// }
-
 export const getPlaces = (lat, long) => async dispatch => {
   try {
     dispatch({ type: 'PLACES_IS_LOADING' });
-    const result = await axios.get(`https://yao-backend.herokuapp.com/map/${lat}/${long}`, {});
+    const result = await axios.get(`https://yao-backend-dev.herokuapp.com/map/${lat}/${long}`, {});
     return dispatch({ type: 'DATA_PLACES', result });
   } catch (err) {
     return dispatch({
@@ -63,7 +52,7 @@ export function savePrefrences(obj) {
 
 export function saveSearch(searchQuery) {
   return function (dispatch) {
-    return fetch(`https://yao-backend.herokuapp.com/search/${searchQuery}`)
+    return fetch(`https://yao-backend-dev.herokuapp.com/search/${searchQuery}`)
       .then(response => response.json())
       .then(json => {
         dispatch({ type: "SAVE_SEARCH", payload: json });

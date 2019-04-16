@@ -11,6 +11,9 @@ import * as serviceWorker from './serviceWorker';
 import Root from './root';
 import './styles/main.scss';
 
+// Setting up everything , app runs from here
+
+
 const storeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,

@@ -48,6 +48,10 @@
     height: 20px;
     width: 20px;
   }
+
+  &--active {
+    border: 2px solid $color-red !important;
+  }
 }
 
 .slick-list {

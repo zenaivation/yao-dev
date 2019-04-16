@@ -3,8 +3,13 @@
 .mainPlace {
   display: grid;
   grid-template-columns: 50% 1fr;
-  background: $third;
+  grid-template-rows: 120px;
+  background: $secondary;
   border-radius: 6px;
+
+  @include desktop {
+    grid-template-rows: 220px;
+  }
 
   &__left {
     display: grid;
@@ -14,6 +19,7 @@
 
   &__right {
     background-size: cover;
+    background-position: center;
     -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 19% 100%);
     clip-path: polygon(0 0, 100% 0, 100% 100%, 19% 100%);
     border-radius: 6px;
@@ -27,7 +33,7 @@
   }
 
   &__view {
-    background: $secondary;
+    background: $color-red;
     display: grid;
     border-bottom-left-radius: 6px;
     grid-row-start: 3;
@@ -38,6 +44,7 @@
     span {
       justify-self: center;
       align-self: center;
+      color: $white;
     }
   }
 }

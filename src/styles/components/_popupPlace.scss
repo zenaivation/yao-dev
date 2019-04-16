@@ -7,6 +7,10 @@
   z-index: 100;
   background: $white;
 
+  @include desktop {
+    left: 15%;
+  }
+
   &__close {
     position: absolute;
     top: 0;

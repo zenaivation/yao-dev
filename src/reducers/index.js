@@ -1,14 +1,6 @@
-import { ADD_ARTICLE } from "../constants/action-types";
-const initialState = {
-  articles: [
-    {
-      title: "Biertuinen"
-    },
-    {
-      title: "Restaurant 1900"
-    }
-  ],
 
+// Creating the initial state
+const initialState = {
   weather: null,
   news: null,
   places: [],

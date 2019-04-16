@@ -2,12 +2,17 @@
 
 .home {
   padding-bottom: 50px;
+
   &__locationBg {
-    height: 400px;
+    height: 250px;
     width: 100%;
     background-size: cover;
     background-position: center;
     display: grid;
+
+    @include desktop {
+     height: 450px;
+    }
   }
 
   &__container {
@@ -15,20 +20,46 @@
     justify-content: center;
     width: 100%;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: 50px;
     align-items: center;
     justify-content: center;
+
+    .profile {
+      display: flex;
+      margin:0;
+      padding-right: 20px;
+      padding-top: 10px;
+      justify-self: end;
+      align-self: start;
+      color: $white;
+
+      p {
+        font-weight: $bold;
+      }
+      
+      a {
+
+        align-self: center;
+        padding-left: 5px;
+
+        img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
   }
 
     &__toMap {
       align-self: start;
       justify-self: center;
+      opacity: 0.5;
   }
 
   .w-n-container {
     display: grid;
     padding: 0 20px;
-    margin-top: -75px;
+    margin-top: -45px;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 20px;
   }
@@ -42,7 +73,15 @@
     margin: 20px auto;
     padding: 0 20px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(100px, 2fr));
     grid-gap: 20px;
+
+    @include desktop {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 2fr));
+    }
+
+    @include tablet {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 2fr));
+    }
   }
 }
