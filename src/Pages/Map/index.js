@@ -9,29 +9,18 @@ import { getPlaces, saveBookmark } from "../../actions/index";
 
 
 import { Navigation, MapSlider, PopupPlace } from '../../components';
-// import BigMarker from '../../images/big-marker.png';
-// import LikeMarker from '../../images/like-marker.png';
-// import MiddleMarker from '../../images/middle-marker.png';
-// import SmallMarker from '../../images/small-marker.png';
+
 import CenterButtonIcon from '../../images/toMap.png';
 
 
 
-const key = 'AIzaSyC48nPNoUEt9PuHq3IAOSfUZ-SPjbKksMk';
+const key = 'AIzaSyCm_boaMdggWKCv5MSJPdM3xTnGiuq_5zg';
 
 
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoiemVubm9icnVpbnNtYSIsImEiOiJjanFxcms5ajYwNXFxNDhsajlob3Qxd2cxIn0.5WXfFyF1RWuwdC9cpSx0Kg"
 });
 
-const settings = {
-  dots: false,
-  arrows: false,
-  infinite: false,
-  speed: 500,
-  slidesToShow: 2,
-  slidesToScroll: 2
-};
 
 const opacityStyles = {
   opacity: '0.5',
@@ -47,33 +36,35 @@ class Explore extends Component {
       lon: '',
       activePlace: {},
       fromSearch: false,
-      bookmarkFilled: false
+      bookmarkFilled: false,
+      activeSlide: 0,
     }
     this.openPopup = this.openPopup.bind(this);
   }
 
 
   componentDidMount() {
+    const { location } = this.props;
 
-    if (this.props.location.state) {
+    if (location.state) {
       this.setState({
         fromSearch: true
       })
     }
 
-    if (this.props.location.state && this.props.location.state.fromPlace) {
+    if (location.state && location.state.fromPlace) {
       this.setState({
         popup: true,
-        activePlace: this.props.location.state.fromPlace
+        activePlace: location.state.fromPlace
       })
     }
 
-    if (this.props.location.state && this.props.location.state.lat && this.props.location.state.lng ) {
+    if (location.state && location.state.lat && location.state.lng) {
       this.setState({
-        lat: this.props.location.state.lat,
-        lon: this.props.location.state.lng
+        lat: location.state.lat,
+        lon: location.state.lng
       })
-      this.props.getPlaces(this.props.location.state.lat, this.props.location.state.lng);
+      this.props.getPlaces(location.state.lat, location.state.lng);
     } else {
       navigator.geolocation.getCurrentPosition(function (location) {
         this.setState({
@@ -94,7 +85,6 @@ class Explore extends Component {
   };
 
   openPopup = (marker) => {
-    console.log(marker);
     this.setState({
       popup: true,
       activePlace: marker,
@@ -123,8 +113,24 @@ class Explore extends Component {
 
   render() {
 
-    const { lat, lon, popup, activePlace, bookmarkFilled } = this.state;
-    const { places, isLoading } = this.props;
+    const settings = {
+      dots: false,
+      arrows: false,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 2,
+      slidesToScroll: 1,
+
+      beforeChange: (current, next) => {
+        this.setState({
+          activeSlide: next
+        })
+      }
+    };
+
+    const { lat, lon, popup, activePlace, bookmarkFilled, activeSlide } = this.state;
+    const { places } = this.props;
+    console.log(activeSlide + 1, "active slide");
 
     const CenterButton = ({ onClick }) => (
       <div onClick={onClick} className="centerButton">
@@ -140,9 +146,10 @@ class Explore extends Component {
               coordinates={[long, lat]}
               anchor="bottom"
               onClick={onClick}
+
             >
-              {/* <img src={LikeMarker} /> */}
-              <div className="marker marker--big"><p>{index + 1}</p></div>
+              <div
+                className={(activeSlide) === index ? 'marker marker--big marker--active' : "marker marker--big"}><p>{index + 1}</p></div>
             </Marker>
           );
         case rating >= 4.0:
@@ -152,8 +159,9 @@ class Explore extends Component {
               anchor="bottom"
               onClick={onClick}
             >
-              <div className="marker marker--middle"><p>{index + 1}</p></div>
-
+              <div className={(activeSlide) === index ? 'marker marker--middle marker--active' : "marker marker--middle"}>
+                <p>{index + 1}
+                </p></div>
             </Marker>
           );
         case rating <= 4.0:
@@ -163,7 +171,10 @@ class Explore extends Component {
               anchor="bottom"
               onClick={onClick}
             >
-              <div className="marker marker--small"><p>{index + 1}</p></div>
+              <div
+                className={(activeSlide) === index ? 'marker marker--small marker--active' : "marker marker--small"}>
+                <p>{index + 1}</p>
+              </div>
             </Marker>
           );
         default:
@@ -180,7 +191,7 @@ class Explore extends Component {
               width: "100vw"
             }}
             center={{ lng: lon, lat: lat }}
-            zoom={[14]}>
+            zoom={[13]}>
             {places.map((place, i) =>
               <MapMarker
                 key={place.place_id}
@@ -203,18 +214,18 @@ class Explore extends Component {
                     // status={place.opening_hours.open_now}
                     image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
                     onClick={() => this.openPopup(place)}
-                    style={popup ? { opacity: 0.2 } : {}}
+                    style={(activeSlide + 1) === i ? 'marginTop: -20px' : null}
                     index={i}
+                    className={(activeSlide + 1) === i ? 'sliderCard__active' : null}
                   />
                 ) : (
                     <MapSlider
                       key={place.place_id}
                       title={place.name}
-                      // status={place.opening_hours.open_now}
-                      // image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${key}`}
                       onClick={() => this.openPopup(place)}
-                      style={popup ? { opacity: 0.2 } : {}}
+                      style={(activeSlide + 1) === i ? 'marginTop: -20px' : null}
                       index={i}
+                      className={(activeSlide + 1) === i ? 'sliderCard__active' : "testclass"}
                     />
                   )}
               </Fragment>

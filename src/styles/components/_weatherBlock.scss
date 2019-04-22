@@ -1,8 +1,8 @@
 .weatherBlock {
   background: $primary;
   display: grid;
-  grid-template-rows: 50px;
-  padding: 10px;
+  grid-template-rows: 40px;
+  padding: 5px;
 
   &__celsius {
     padding:5px;

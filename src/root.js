@@ -2,7 +2,9 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import { Home, Explore, Profile, Bookmarks, SingleBookmark } from './Pages';
+import { Home, Explore, Profile, Bookmarks } from './Pages';
+
+//Routes every page
 const Root = ({ store }) => (
   <Provider store={store}>
     <Router>
@@ -11,8 +13,6 @@ const Root = ({ store }) => (
         <Route path="/map" component={Explore} />
         <Route path="/profile" component={Profile} />
         <Route path="/bookmarks" component={Bookmarks} />
-        <Route path="/singlebookmarks/:id" component={SingleBookmark} />
-
       </Fragment>
     </Router >
   </Provider >

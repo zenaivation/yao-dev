@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import { toast } from 'react-toastify';
-import { Navigation, Header, BookmarkRow, SelectPref, SliderPref, Button } from '../../components';
+import { Navigation, Header, SelectPref, Button } from '../../components';
 import { savePrefrences } from '../../actions';
 
 class Profile extends Component {
