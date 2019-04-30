@@ -52,6 +52,10 @@
   &--active {
     border: 2px solid $color-red !important;
   }
+
+  &--red {
+    background: $secondary;
+  }
 }
 
 .slick-list {

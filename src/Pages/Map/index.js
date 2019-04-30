@@ -43,29 +43,58 @@ class Explore extends Component {
   }
 
 
-  componentDidMount() {
+  componentDidMount = () => {
     const { location } = this.props;
 
+    navigator.geolocation.getCurrentPosition(function (homeLocation) {
+      this.setState({currentLocation: homeLocation});
+    }.bind(this));
+
     if (location.state) {
+      console.log('1')
       this.setState({
         fromSearch: true
       })
     }
 
     if (location.state && location.state.fromPlace) {
+      console.log('2')
+
+      const locationLat = location.state.fromPlace.geometry.location.lat;
+      const locationLng = location.state.fromPlace.geometry.location.lat;
       this.setState({
         popup: true,
         activePlace: location.state.fromPlace
       })
+
+      navigator.geolocation.getCurrentPosition(function (homeLocation) {
+        const midpointLat = (locationLat + homeLocation.coords.latitude) / 2;
+        const midpointLng = (locationLng + homeLocation.coords.longitude) / 2;
+        this.setState({
+          lat: midpointLat,
+          lon: midpointLng
+        })
+        this.props.getPlaces(locationLat, locationLng);
+      }.bind(this));
     }
 
+    // if a location is set, fly to the midpoint between home and this
+    // location, so both are within the bounds of the map.
     if (location.state && location.state.lat && location.state.lng) {
-      this.setState({
-        lat: location.state.lat,
-        lon: location.state.lng
-      })
-      this.props.getPlaces(location.state.lat, location.state.lng);
+      console.log('3')
+
+      navigator.geolocation.getCurrentPosition(function (homeLocation) {
+        const midpointLat = (location.state.lat + homeLocation.coords.latitude) / 2;
+        const midpointLng = (location.state.lng + homeLocation.coords.longitude) / 2;
+        this.setState({
+          lat: midpointLat,
+          lon: midpointLng
+        })
+        this.props.getPlaces(location.state.lat,  location.state.lng);
+      }.bind(this));
     } else {
+      console.log('4')
+
       navigator.geolocation.getCurrentPosition(function (location) {
         this.setState({
           lat: location.coords.latitude,
@@ -76,7 +105,6 @@ class Explore extends Component {
     }
 
   }
-
 
   handleClosePopup = () => {
     this.setState({
@@ -181,6 +209,21 @@ class Explore extends Component {
           return null;
       }
     }
+
+    const HomeMarker = ({lat, long}) => {
+      return (
+        <Marker
+          coordinates={[long, lat]}
+          anchor="bottom"
+        >
+          <div className="marker marker--small marker--red">
+            <p>{"H"}</p>
+          </div>
+        </Marker>
+      );
+    };
+
+
     return (
       <Fragment>
         <div className="map-container">
@@ -202,6 +245,13 @@ class Explore extends Component {
                 index={i}
               />
             )}
+            {this.state.currentLocation &&
+              <HomeMarker
+              key={'home'}
+              lat={this.state.currentLocation.coords.latitude}
+              long={this.state.currentLocation.coords.longitude}
+              index={9999}
+            />}
           </Map>
           <CenterButton onClick={() => this.centerButton()} />
           <Slider {...settings}>
