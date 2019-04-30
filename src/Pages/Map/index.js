@@ -38,6 +38,7 @@ class Explore extends Component {
       fromSearch: false,
       bookmarkFilled: false,
       activeSlide: 0,
+      selectedPlace: {}
     }
     this.openPopup = this.openPopup.bind(this);
   }
@@ -47,7 +48,7 @@ class Explore extends Component {
     const { location } = this.props;
 
     navigator.geolocation.getCurrentPosition(function (homeLocation) {
-      this.setState({currentLocation: homeLocation});
+      this.setState({currentLocation: homeLocation, homeLocation });
     }.bind(this));
 
     if (location.state) {
@@ -61,10 +62,11 @@ class Explore extends Component {
       console.log('2')
 
       const locationLat = location.state.fromPlace.geometry.location.lat;
-      const locationLng = location.state.fromPlace.geometry.location.lat;
+      const locationLng = location.state.fromPlace.geometry.location.lng;
       this.setState({
         popup: true,
-        activePlace: location.state.fromPlace
+        activePlace: location.state.fromPlace,
+        selectedPlace: location.state.fromPlace
       })
 
       navigator.geolocation.getCurrentPosition(function (homeLocation) {
@@ -98,11 +100,37 @@ class Explore extends Component {
       navigator.geolocation.getCurrentPosition(function (location) {
         this.setState({
           lat: location.coords.latitude,
-          lon: location.coords.longitude
+          lon: location.coords.longitude,
         })
-        this.props.getPlaces(this.state.lat, this.state.lon);
+        this.props.getPlaces(location.coords.latitude, location.coords.longitude);
       }.bind(this))
     }
+  }
+
+  // if a location is set, fly to the midpoint between home and this
+  // location, so both are within the bounds of the map.
+  centerBetweenHomeAndPlace = () => {
+    const { selectedPlace, homeLocation } = this.state;
+    console.log('centerfunc', selectedPlace)
+    if (selectedPlace && selectedPlace.geometry) {
+      console.log('beforegethome')
+      // navigator.geolocation.getCurrentPosition(function (homeLocation) {
+      //     console.log('gothome')
+      const locationLat = selectedPlace.geometry.location.lat;
+      const locationLng = selectedPlace.geometry.location.lng;
+      const midpointLat = (locationLat + homeLocation.coords.latitude) / 2;
+      const midpointLng = (locationLng + homeLocation.coords.longitude) / 2;
+      this.setState({
+        lat: midpointLat,
+        lon: midpointLng
+      })
+      console.log('centered')
+    }
+  }
+
+  componentDidUpdate = () => {
+    // check for a slider update
+    console.log('updated')
 
   }
 
@@ -141,6 +169,13 @@ class Explore extends Component {
 
   render() {
 
+    const { lat, lon, popup, activePlace, bookmarkFilled, activeSlide } = this.state;
+    const { places } = this.props;
+    console.log(activeSlide + 1, "active slide");
+    console.log('selected', this.state.selectedPlace);
+    console.log('activePlace', this.state.activePlace);
+
+
     const settings = {
       dots: false,
       arrows: false,
@@ -149,16 +184,16 @@ class Explore extends Component {
       slidesToShow: 2,
       slidesToScroll: 1,
 
-      beforeChange: (current, next) => {
+      afterChange: (current) => {
         this.setState({
-          activeSlide: next
+          activeSlide: current,
+          selectedPlace: places[current-1],
+          activePlace: places[current]
         })
+        this.centerBetweenHomeAndPlace();
+        console.log('afterchange')
       }
     };
-
-    const { lat, lon, popup, activePlace, bookmarkFilled, activeSlide } = this.state;
-    const { places } = this.props;
-    console.log(activeSlide + 1, "active slide");
 
     const CenterButton = ({ onClick }) => (
       <div onClick={onClick} className="centerButton">
