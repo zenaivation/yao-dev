@@ -52,15 +52,12 @@ class Explore extends Component {
     }.bind(this));
 
     if (location.state) {
-      console.log('1')
       this.setState({
         fromSearch: true
       })
     }
 
     if (location.state && location.state.fromPlace) {
-      console.log('2')
-
       const locationLat = location.state.fromPlace.geometry.location.lat;
       const locationLng = location.state.fromPlace.geometry.location.lng;
       this.setState({
@@ -83,8 +80,6 @@ class Explore extends Component {
     // if a location is set, fly to the midpoint between home and this
     // location, so both are within the bounds of the map.
     if (location.state && location.state.lat && location.state.lng) {
-      console.log('3')
-
       navigator.geolocation.getCurrentPosition(function (homeLocation) {
         const midpointLat = (location.state.lat + homeLocation.coords.latitude) / 2;
         const midpointLng = (location.state.lng + homeLocation.coords.longitude) / 2;
@@ -95,8 +90,6 @@ class Explore extends Component {
         this.props.getPlaces(location.state.lat,  location.state.lng);
       }.bind(this));
     } else {
-      console.log('4')
-
       navigator.geolocation.getCurrentPosition(function (location) {
         this.setState({
           lat: location.coords.latitude,
@@ -111,11 +104,7 @@ class Explore extends Component {
   // location, so both are within the bounds of the map.
   centerBetweenHomeAndPlace = () => {
     const { selectedPlace, homeLocation } = this.state;
-    console.log('centerfunc', selectedPlace)
     if (selectedPlace && selectedPlace.geometry) {
-      console.log('beforegethome')
-      // navigator.geolocation.getCurrentPosition(function (homeLocation) {
-      //     console.log('gothome')
       const locationLat = selectedPlace.geometry.location.lat;
       const locationLng = selectedPlace.geometry.location.lng;
       const midpointLat = (locationLat + homeLocation.coords.latitude) / 2;
@@ -124,15 +113,8 @@ class Explore extends Component {
         lat: midpointLat,
         lon: midpointLng
       })
-      console.log('centered')
     }
-  }
-
-  componentDidUpdate = () => {
-    // check for a slider update
-    console.log('updated')
-
-  }
+  };
 
   handleClosePopup = () => {
     this.setState({
@@ -142,8 +124,8 @@ class Explore extends Component {
 
   openPopup = (marker) => {
     this.setState({
-      popup: true,
-      activePlace: marker,
+      popup: true
+      // activePlace: marker,
     })
   };
 
@@ -158,23 +140,21 @@ class Explore extends Component {
   }
 
   centerButton = () => {
-    navigator.geolocation.getCurrentPosition(function (location) {
-      this.setState({
-        lat: location.coords.latitude,
-        lon: location.coords.longitude
-      })
-      this.props.getPlaces(this.state.lat, this.state.lon);
-    }.bind(this));
+    // TODO: fix this, navigator doesnt work here
+
+    // navigator.geolocation.getCurrentPosition(function (location) {
+    //   this.setState({
+    //     lat: location.coords.latitude,
+    //     lon: location.coords.longitude
+    //   })
+    //   this.props.getPlaces(this.state.lat, this.state.lon);
+    // }.bind(this));
   }
 
   render() {
 
     const { lat, lon, popup, activePlace, bookmarkFilled, activeSlide } = this.state;
     const { places } = this.props;
-    console.log(activeSlide + 1, "active slide");
-    console.log('selected', this.state.selectedPlace);
-    console.log('activePlace', this.state.activePlace);
-
 
     const settings = {
       dots: false,
@@ -187,11 +167,11 @@ class Explore extends Component {
       afterChange: (current) => {
         this.setState({
           activeSlide: current,
-          selectedPlace: places[current-1],
+          selectedPlace: places[current],
           activePlace: places[current]
-        })
-        this.centerBetweenHomeAndPlace();
-        console.log('afterchange')
+        }, () => {
+          this.centerBetweenHomeAndPlace();
+        });
       }
     };
 
