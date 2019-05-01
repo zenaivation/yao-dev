@@ -151,6 +151,35 @@ class Explore extends Component {
     // }.bind(this));
   }
 
+  renderPopup = () => {
+    const { activePlace, bookmarkFilled } = this.state;
+    if (activePlace && activePlace.photos) {
+      return (
+        <PopupPlace
+          image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${activePlace.photos[0].photo_reference}&key=${key}`}
+          title={activePlace.name}
+          description="Nulla sit amet est. Praesent vestibulum dapibus nibh. Phasellus dolor. Duis leo.Vivamus consectetuer hendrerit lacus. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Vivamus quis mi. Fusce ac felis sit amet ligula pharetra condimentum."
+          onClick={this.handleClosePopup}
+          onSaveBookmark={() => this.saveBookmark(activePlace)}
+          bookmark={bookmarkFilled}
+          name={activePlace.name}
+        />
+      );
+    } else {
+      return (
+        <PopupPlace
+          title={activePlace.name}
+          description="Nulla sit amet est. Praesent vestibulum dapibus nibh. Phasellus dolor. Duis leo.Vivamus consectetuer hendrerit lacus. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Vivamus quis mi. Fusce ac felis sit amet ligula pharetra condimentum."
+          onClick={this.handleClosePopup}
+          onSaveBookmark={() => this.saveBookmark(activePlace)}
+          bookmark={bookmarkFilled}
+          name={activePlace.name}
+        />
+      );
+    }
+
+  }
+
   render() {
 
     const { lat, lon, popup, activePlace, bookmarkFilled, activeSlide } = this.state;
@@ -296,22 +325,7 @@ class Explore extends Component {
               </Fragment>
             )}
           </Slider>
-
-          {
-            popup ? (
-              <PopupPlace
-                image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${activePlace.photos[0].photo_reference}&key=${key}`}
-                title={activePlace.name}
-                description="Nulla sit amet est. Praesent vestibulum dapibus nibh. Phasellus dolor. Duis leo.Vivamus consectetuer hendrerit lacus. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Vivamus quis mi. Fusce ac felis sit amet ligula pharetra condimentum."
-                onClick={this.handleClosePopup}
-                onSaveBookmark={() => this.saveBookmark(activePlace)}
-                bookmark={bookmarkFilled}
-                name={activePlace.name}
-              />
-            ) : (
-                <Fragment></Fragment>
-              )
-          }
+          { popup ? this.renderPopup() : <Fragment/> }
         </div>
         <Navigation explore={true} />
       </Fragment >
