@@ -38,13 +38,18 @@ class Explore extends Component {
       fromSearch: false,
       bookmarkFilled: false,
       activeSlide: 0,
+      selectedPlace: {}
     }
     this.openPopup = this.openPopup.bind(this);
   }
 
 
-  componentDidMount() {
+  componentDidMount = () => {
     const { location } = this.props;
+
+    navigator.geolocation.getCurrentPosition(function (homeLocation) {
+      this.setState({currentLocation: homeLocation, homeLocation });
+    }.bind(this));
 
     if (location.state) {
       this.setState({
@@ -53,30 +58,63 @@ class Explore extends Component {
     }
 
     if (location.state && location.state.fromPlace) {
+      const locationLat = location.state.fromPlace.geometry.location.lat;
+      const locationLng = location.state.fromPlace.geometry.location.lng;
       this.setState({
         popup: true,
-        activePlace: location.state.fromPlace
+        activePlace: location.state.fromPlace,
+        selectedPlace: location.state.fromPlace
       })
+
+      navigator.geolocation.getCurrentPosition(function (homeLocation) {
+        const midpointLat = (locationLat + homeLocation.coords.latitude) / 2;
+        const midpointLng = (locationLng + homeLocation.coords.longitude) / 2;
+        this.setState({
+          lat: midpointLat,
+          lon: midpointLng
+        })
+        this.props.getPlaces(locationLat, locationLng);
+      }.bind(this));
     }
 
+    // if a location is set, fly to the midpoint between home and this
+    // location, so both are within the bounds of the map.
     if (location.state && location.state.lat && location.state.lng) {
-      this.setState({
-        lat: location.state.lat,
-        lon: location.state.lng
-      })
-      this.props.getPlaces(location.state.lat, location.state.lng);
+      navigator.geolocation.getCurrentPosition(function (homeLocation) {
+        const midpointLat = (location.state.lat + homeLocation.coords.latitude) / 2;
+        const midpointLng = (location.state.lng + homeLocation.coords.longitude) / 2;
+        this.setState({
+          lat: midpointLat,
+          lon: midpointLng
+        })
+        this.props.getPlaces(location.state.lat,  location.state.lng);
+      }.bind(this));
     } else {
       navigator.geolocation.getCurrentPosition(function (location) {
         this.setState({
           lat: location.coords.latitude,
-          lon: location.coords.longitude
+          lon: location.coords.longitude,
         })
-        this.props.getPlaces(this.state.lat, this.state.lon);
+        this.props.getPlaces(location.coords.latitude, location.coords.longitude);
       }.bind(this))
     }
-
   }
 
+  // if a location is set, fly to the midpoint between home and this
+  // location, so both are within the bounds of the map.
+  centerBetweenHomeAndPlace = () => {
+    const { selectedPlace, homeLocation } = this.state;
+    if (selectedPlace && selectedPlace.geometry) {
+      const locationLat = selectedPlace.geometry.location.lat;
+      const locationLng = selectedPlace.geometry.location.lng;
+      const midpointLat = (locationLat + homeLocation.coords.latitude) / 2;
+      const midpointLng = (locationLng + homeLocation.coords.longitude) / 2;
+      this.setState({
+        lat: midpointLat,
+        lon: midpointLng
+      })
+    }
+  };
 
   handleClosePopup = () => {
     this.setState({
@@ -86,8 +124,8 @@ class Explore extends Component {
 
   openPopup = (marker) => {
     this.setState({
-      popup: true,
-      activePlace: marker,
+      popup: true
+      // activePlace: marker,
     })
   };
 
@@ -102,16 +140,50 @@ class Explore extends Component {
   }
 
   centerButton = () => {
-    navigator.geolocation.getCurrentPosition(function (location) {
-      this.setState({
-        lat: location.coords.latitude,
-        lon: location.coords.longitude
-      })
-      this.props.getPlaces(this.state.lat, this.state.lon);
-    }.bind(this));
+    // TODO: fix this, navigator doesnt work here
+
+    // navigator.geolocation.getCurrentPosition(function (location) {
+    //   this.setState({
+    //     lat: location.coords.latitude,
+    //     lon: location.coords.longitude
+    //   })
+    //   this.props.getPlaces(this.state.lat, this.state.lon);
+    // }.bind(this));
+  }
+
+  renderPopup = () => {
+    const { activePlace, bookmarkFilled } = this.state;
+    if (activePlace && activePlace.photos) {
+      return (
+        <PopupPlace
+          image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${activePlace.photos[0].photo_reference}&key=${key}`}
+          title={activePlace.name}
+          description="Nulla sit amet est. Praesent vestibulum dapibus nibh. Phasellus dolor. Duis leo.Vivamus consectetuer hendrerit lacus. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Vivamus quis mi. Fusce ac felis sit amet ligula pharetra condimentum."
+          onClick={this.handleClosePopup}
+          onSaveBookmark={() => this.saveBookmark(activePlace)}
+          bookmark={bookmarkFilled}
+          name={activePlace.name}
+        />
+      );
+    } else {
+      return (
+        <PopupPlace
+          title={activePlace.name}
+          description="Nulla sit amet est. Praesent vestibulum dapibus nibh. Phasellus dolor. Duis leo.Vivamus consectetuer hendrerit lacus. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Vivamus quis mi. Fusce ac felis sit amet ligula pharetra condimentum."
+          onClick={this.handleClosePopup}
+          onSaveBookmark={() => this.saveBookmark(activePlace)}
+          bookmark={bookmarkFilled}
+          name={activePlace.name}
+        />
+      );
+    }
+
   }
 
   render() {
+
+    const { lat, lon, popup, activePlace, bookmarkFilled, activeSlide } = this.state;
+    const { places } = this.props;
 
     const settings = {
       dots: false,
@@ -121,16 +193,16 @@ class Explore extends Component {
       slidesToShow: 2,
       slidesToScroll: 1,
 
-      beforeChange: (current, next) => {
+      afterChange: (current) => {
         this.setState({
-          activeSlide: next
-        })
+          activeSlide: current,
+          selectedPlace: places[current],
+          activePlace: places[current]
+        }, () => {
+          this.centerBetweenHomeAndPlace();
+        });
       }
     };
-
-    const { lat, lon, popup, activePlace, bookmarkFilled, activeSlide } = this.state;
-    const { places } = this.props;
-    console.log(activeSlide + 1, "active slide");
 
     const CenterButton = ({ onClick }) => (
       <div onClick={onClick} className="centerButton">
@@ -181,6 +253,21 @@ class Explore extends Component {
           return null;
       }
     }
+
+    const HomeMarker = ({lat, long}) => {
+      return (
+        <Marker
+          coordinates={[long, lat]}
+          anchor="bottom"
+        >
+          <div className="marker marker--small marker--red">
+            <p>{"H"}</p>
+          </div>
+        </Marker>
+      );
+    };
+
+
     return (
       <Fragment>
         <div className="map-container">
@@ -202,6 +289,13 @@ class Explore extends Component {
                 index={i}
               />
             )}
+            {this.state.currentLocation &&
+              <HomeMarker
+              key={'home'}
+              lat={this.state.currentLocation.coords.latitude}
+              long={this.state.currentLocation.coords.longitude}
+              index={9999}
+            />}
           </Map>
           <CenterButton onClick={() => this.centerButton()} />
           <Slider {...settings}>
@@ -231,22 +325,7 @@ class Explore extends Component {
               </Fragment>
             )}
           </Slider>
-
-          {
-            popup ? (
-              <PopupPlace
-                image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${activePlace.photos[0].photo_reference}&key=${key}`}
-                title={activePlace.name}
-                description="Nulla sit amet est. Praesent vestibulum dapibus nibh. Phasellus dolor. Duis leo.Vivamus consectetuer hendrerit lacus. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Vivamus quis mi. Fusce ac felis sit amet ligula pharetra condimentum."
-                onClick={this.handleClosePopup}
-                onSaveBookmark={() => this.saveBookmark(activePlace)}
-                bookmark={bookmarkFilled}
-                name={activePlace.name}
-              />
-            ) : (
-                <Fragment></Fragment>
-              )
-          }
+          { popup ? this.renderPopup() : <Fragment/> }
         </div>
         <Navigation explore={true} />
       </Fragment >
