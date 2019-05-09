@@ -10,7 +10,7 @@ import { getPlaces, saveBookmark } from "../../actions/index";
 
 import { Navigation, MapSlider, PopupPlace } from '../../components';
 
-import CenterButtonIcon from '../../images/toMap.png';
+import CenterButtonIcon from '../../images/center-icon.png';
 
 
 
@@ -48,7 +48,7 @@ class Explore extends Component {
     const { location } = this.props;
 
     navigator.geolocation.getCurrentPosition(function (homeLocation) {
-      this.setState({currentLocation: homeLocation, homeLocation });
+      this.setState({ currentLocation: homeLocation, homeLocation });
     }.bind(this));
 
     if (location.state) {
@@ -87,7 +87,7 @@ class Explore extends Component {
           lat: midpointLat,
           lon: midpointLng
         })
-        this.props.getPlaces(location.state.lat,  location.state.lng);
+        this.props.getPlaces(location.state.lat, location.state.lng);
       }.bind(this));
     } else {
       navigator.geolocation.getCurrentPosition(function (location) {
@@ -140,15 +140,13 @@ class Explore extends Component {
   }
 
   centerButton = () => {
-    // TODO: fix this, navigator doesnt work here
-
-    // navigator.geolocation.getCurrentPosition(function (location) {
-    //   this.setState({
-    //     lat: location.coords.latitude,
-    //     lon: location.coords.longitude
-    //   })
-    //   this.props.getPlaces(this.state.lat, this.state.lon);
-    // }.bind(this));
+    navigator.geolocation.getCurrentPosition(function (location) {
+      this.setState({
+        lat: location.coords.latitude,
+        lon: location.coords.longitude
+      })
+      this.props.getPlaces(this.state.lat, this.state.lon);
+    }.bind(this));
   }
 
   renderPopup = () => {
@@ -254,7 +252,7 @@ class Explore extends Component {
       }
     }
 
-    const HomeMarker = ({lat, long}) => {
+    const HomeMarker = ({ lat, long }) => {
       return (
         <Marker
           coordinates={[long, lat]}
@@ -291,11 +289,11 @@ class Explore extends Component {
             )}
             {this.state.currentLocation &&
               <HomeMarker
-              key={'home'}
-              lat={this.state.currentLocation.coords.latitude}
-              long={this.state.currentLocation.coords.longitude}
-              index={9999}
-            />}
+                key={'home'}
+                lat={this.state.currentLocation.coords.latitude}
+                long={this.state.currentLocation.coords.longitude}
+                index={9999}
+              />}
           </Map>
           <CenterButton onClick={() => this.centerButton()} />
           <Slider {...settings}>
@@ -325,7 +323,7 @@ class Explore extends Component {
               </Fragment>
             )}
           </Slider>
-          { popup ? this.renderPopup() : <Fragment/> }
+          {popup ? this.renderPopup() : <Fragment />}
         </div>
         <Navigation explore={true} />
       </Fragment >
