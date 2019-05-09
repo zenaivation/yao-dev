@@ -5,7 +5,7 @@ import Skeleton from 'react-loading-skeleton';
 
 import { Navigation, SearchBar, WeatherBlock, NewsBlock, MainPlace, SmallPlace, Header } from '../../components';
 import { getWeather, getNews, getPlaces, saveSearch } from "../../actions/index";
-import toMap from '../../images/toMap.png';
+import toMap from '../../images/center-icon.png';
 import profileImage from '../../images/profileImage.png';
 
 import './styles.scss';

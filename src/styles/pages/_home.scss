@@ -53,6 +53,16 @@
     &__toMap {
       align-self: start;
       justify-self: center;
+      background: white;
+      height: 50px;
+      width: 50px;
+      display: grid;
+      border-radius: 50%;
+      place-items:center;
+
+      img {
+        width: 60%;
+      }
   }
 
   .w-n-container {
