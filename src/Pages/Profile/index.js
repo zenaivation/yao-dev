@@ -1,8 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import { toast } from 'react-toastify';
+import Select from 'react-select';
+
 import { Navigation, Header, SelectPref, Button } from '../../components';
 import { savePrefrences } from '../../actions';
+
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'vanilla', label: 'Vanilla' }
+];
+
 
 class Profile extends Component {
   constructor(props) {
@@ -10,13 +19,24 @@ class Profile extends Component {
     this.state = {
       foodType: [
         {
-          name: 'Vegan',
+          label: 'Vegan',
+          value: 'Vegan'
         },
         {
-          name: 'Meat Lover',
+          label: 'Meat Lover',
+          value: 'Meat Lover'
         },
         {
-          name: 'Vegatarian',
+          label: 'Vegetarian',
+          value: 'Vegetarian'
+        },
+        {
+          label: 'Local',
+          value: 'Local'
+        },
+        {
+          label: 'Organic',
+          value: 'Organic'
         }
       ],
       relationStatus: [
@@ -41,6 +61,11 @@ class Profile extends Component {
       myFoodtype: '',
       myRelationship: '',
       myMood: '',
+      selectedFood: null,
+      selectedRelation: null,
+      selectedPrice: null,
+      selectedMood: null,
+
 
     }
     this.handleSaveTypes = this.handleSaveTypes.bind(this);
@@ -69,6 +94,11 @@ class Profile extends Component {
     })
   }
 
+  handleChange = (selectedOption) => {
+    this.setState({ selectedOption });
+    console.log(`Option selected:`, selectedOption);
+  }
+
   handleSaveTypes() {
     const { myFoodtype, myRelationship, myMood } = this.state;
     const obj = { myFoodtype, myRelationship, myMood };
@@ -79,7 +109,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { foodType, relationStatus, mood, myFoodtype, myRelationship, myMood } = this.state;
+    const { foodType, relationStatus, mood, myFoodtype, myRelationship, myMood, selectedOption } = this.state;
     if (this.props.profilePref) {
       console.log("profile pref", this.props.profilePref.myFoodtype);
     }
@@ -92,12 +122,53 @@ class Profile extends Component {
             <h2 className="boldH2 boldH2--black">Hey Jirka !</h2>
             <p className="P P--black">Fill in all your preferences to have the best restaurant matches</p>
           </div>
-          <SelectPref label="Food type"
-            list={foodType}
-            value={myFoodtype}
-            onChange={this.handleFoodTypeChange}
-          />
-          <SelectPref
+          <div className="select">
+            <label>Food type</label>
+            <Select
+              isMulti
+              value={selectedOption}
+              onChange={(selectedOption) => this.setState({ selectedFood: selectedOption })}
+              options={foodType}
+            />
+          </div>
+          <div className="select">
+            <label>You are</label>
+            <Select
+              value={selectedOption}
+              onChange={(selectedOption) => this.setState({ selectedRelation: selectedOption })}
+              options={[{ value: 'A family', label: 'A family' },
+              { value: 'Sole traveler', label: 'Sole traveler' },
+              { value: 'Couple', label: 'Couple' }]}
+            />
+          </div>
+          <div className="select">
+            <label>Buget</label>
+            <Select
+              isMulti
+              value={selectedOption}
+              onChange={(selectedOption) => this.setState({ selectedPrice: selectedOption })}
+              options={[
+                { value: '$', label: '$' },
+                { value: '$$', label: '$$' },
+                { value: '$$$', label: '$$$' },
+                { value: '$$$$', label: '$$$$' },
+                { value: '$$$$$', label: '$$$$$' },
+              ]}
+            />
+          </div>
+          <div className="select">
+            <label>Mood</label>
+            <Select
+              value={selectedOption}
+              onChange={(selectedOption) => this.setState({ selectedMood: selectedOption })}
+              options={[
+                { value: 'Busy', label: 'Busy' },
+                { value: 'Relaxed', label: 'Relaxed' },
+              ]}
+            />
+          </div>
+
+          {/* <SelectPref
             label="Relation status"
             list={relationStatus}
             value={myRelationship}
@@ -108,14 +179,14 @@ class Profile extends Component {
             list={mood}
             value={myMood}
             onChange={this.handleMoodChange}
-          />
+          /> */}
 
           <div className="btn-container">
             <Button text="save" onClick={this.handleSaveTypes} />
           </div>
         </div>
 
-        {profilePref ? (
+        {/* {profilePref ? (
           <div className="profile__table">
             <div className="profile__row">
               <p>Food type</p>
@@ -145,7 +216,7 @@ class Profile extends Component {
               <p></p>
             </div>
           </div>
-        </div>)}
+        </div>)} */}
 
         <Navigation profile={true} />
 
