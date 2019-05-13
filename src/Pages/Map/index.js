@@ -258,8 +258,8 @@ class Explore extends Component {
           coordinates={[long, lat]}
           anchor="bottom"
         >
-          <div className="marker marker--small marker--red">
-            <p>{"H"}</p>
+          <div className="marker marker--small marker--yourlocation">
+
           </div>
         </Marker>
       );
