@@ -8,6 +8,7 @@ const initialState = {
   searchLocation: [],
   bookmarks: [],
   isLoading: null,
+  spottedByLocalsPlaces: [],
 };
 
 
@@ -58,6 +59,22 @@ function rootReducer(state = initialState, action) {
         ...state,
         bookmarks: [...state.bookmarks, action.payload]
       }
+    }
+
+    case 'SPOTTED_BY_LOCALES_LOADING': {
+      return { ...state, isLoading: true };
+    }
+
+    case 'SPOTTED_BY_LOCALES_DATA': {
+      return { ...state, spottedByLocalsPlaces: true };
+    }
+
+    case 'SPOTTED_BY_LOCALS_DATA': {
+      return { ...state, spottedByLocalsPlaces: action.payload };
+    }
+
+    case 'SPOTTED_BY_LOCALS_ERROR': {
+      return { ...state, error: true };
     }
 
     default:
